@@ -3,7 +3,9 @@ package com.example.moviestreaming.presenter.screens.welcome
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
@@ -13,7 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.moviestreaming.R
+import com.example.moviestreaming.presenter.components.button.PrimaryButton
 import com.example.moviestreaming.presenter.components.slide.WelcomeSlideUI
 import com.example.moviestreaming.presenter.theme.MovieStreamingTheme
 
@@ -63,10 +67,27 @@ fun WelcomeContent() {
                         .align(Alignment.BottomCenter)
                 )
 
-                WelcomeSlideUI(
-                    slideItems = slideItems,
-                    pagerState = pagerState
-                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    WelcomeSlideUI(
+                        modifier = Modifier
+                            .weight(1f),
+                        slideItems = slideItems,
+                        pagerState = pagerState
+                    )
+
+                    PrimaryButton(
+                        modifier = Modifier
+                            .align(Alignment.CenterHorizontally)
+                            .padding(start = 24.dp, end = 24.dp, bottom = 32.dp),
+                        text = "Pular",
+                        isLoading = false,
+                        enabled = true,
+                        onClick = {}
+                    )
+                }
             }
         }
     )
