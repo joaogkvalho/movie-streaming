@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.moviestreaming.presenter.screens.authentication.home.HomeAuthenticationScreen
+import com.example.moviestreaming.presenter.screens.authentication.signup.screen.SignupScreen
 import com.example.moviestreaming.presenter.theme.MovieStreamingTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +14,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MovieStreamingTheme {
-                HomeAuthenticationScreen()
+                SignupScreen(
+                    onBackPressed = {}
+                )
             }
         }
     }
