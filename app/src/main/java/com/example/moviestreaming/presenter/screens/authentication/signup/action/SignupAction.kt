@@ -8,4 +8,6 @@ sealed class SignupAction {
         val value: String,
         val type: InputType
     ) : SignupAction()
+
+    data object OnPasswordVisibilityChange: SignupAction()
 }

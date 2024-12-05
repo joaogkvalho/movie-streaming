@@ -21,10 +21,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -63,7 +60,7 @@ fun SignupScreen(
     SignupScreenContent(
         state = state,
         action = viewModel::submitAction,
-        onBackPressed = {}
+        onBackPressed = onBackPressed
     )
 }
 
@@ -73,13 +70,10 @@ fun SignupScreenContent(
     action: (SignupAction) -> Unit,
     onBackPressed: () -> Unit
 ) {
-
-    var showPassword by remember { mutableStateOf(false) }
-
     Scaffold(
         topBar = {
             TopAppBarUI(
-                onClick = {}
+                onClick = onBackPressed
             )
         },
         content = { paddingValues ->
@@ -127,7 +121,8 @@ fun SignupScreenContent(
                     isError = false,
                     placeholder = stringResource(id = R.string.label_input_email_signup_screen),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next
                     ),
                     onValueChange = {
                         action(SignupAction.OnValueChange(
@@ -152,11 +147,11 @@ fun SignupScreenContent(
                         if (state.password.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    showPassword = !showPassword
+                                    action(SignupAction.OnPasswordVisibilityChange)
                                 },
                                 content = {
                                     Icon(
-                                        painter = if (showPassword) {
+                                        painter = if (state.passwordVisibility) {
                                             painterResource(id = R.drawable.ic_hide)
                                         } else {
                                             painterResource(id = R.drawable.ic_show)
@@ -171,9 +166,10 @@ fun SignupScreenContent(
                     isError = false,
                     placeholder = stringResource(id = R.string.label_input_password_signup_screen),
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Password
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
                     ),
-                    visualTransformation = if (showPassword) {
+                    visualTransformation = if (state.passwordVisibility) {
                             VisualTransformation.None
                         } else {
                             PasswordVisualTransformation()
@@ -193,7 +189,7 @@ fun SignupScreenContent(
                         .fillMaxWidth(),
                     text = stringResource(id = R.string.label_button_signup_screen),
                     isLoading = false,
-                    enabled = true,
+                    enabled = state.enabledSignupButton,
                     onClick = {}
                 )
 
