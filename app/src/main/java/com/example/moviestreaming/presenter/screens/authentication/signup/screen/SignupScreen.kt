@@ -140,7 +140,7 @@ fun SignupScreenContent(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_password),
                             contentDescription = null,
-                            tint = Color.Unspecified
+                            tint = Color.Gray
                         )
                     },
                     trailingIcon = {
