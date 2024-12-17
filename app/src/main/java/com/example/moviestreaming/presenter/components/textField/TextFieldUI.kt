@@ -156,7 +156,7 @@ private fun TextFieldUIPreview() {
                 value = textValue,
                 leadingIcon = {
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_password),
+                        painter = painterResource(id = R.drawable.ic_lock_password),
                         contentDescription = null,
                         tint = Color.Unspecified
                     )

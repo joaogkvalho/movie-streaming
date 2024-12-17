@@ -1,5 +1,6 @@
 package com.example.moviestreaming.presenter.screens.authentication.signup.screen
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,7 +38,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.moviestreaming.R
 import com.example.moviestreaming.core.enums.InputType
 import com.example.moviestreaming.presenter.components.button.PrimaryButton
@@ -49,15 +50,16 @@ import com.example.moviestreaming.presenter.screens.authentication.signup.state.
 import com.example.moviestreaming.presenter.screens.authentication.signup.viewmodel.SignupViewModel
 import com.example.moviestreaming.presenter.theme.MovieStreamingTheme
 import com.example.moviestreaming.presenter.theme.UrbanistFamily
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SignupScreen(
     onBackPressed: () -> Unit
 ) {
-    val viewModel: SignupViewModel = viewModel()
-    val state = viewModel.state.collectAsState().value
+    val viewModel = koinViewModel<SignupViewModel>()
+    val state by viewModel.state.collectAsState()
 
-    SignupScreenContent(
+    SignupContent(
         state = state,
         action = viewModel::submitAction,
         onBackPressed = onBackPressed
@@ -65,7 +67,7 @@ fun SignupScreen(
 }
 
 @Composable
-fun SignupScreenContent(
+fun SignupContent(
     state: SignupState,
     action: (SignupAction) -> Unit,
     onBackPressed: () -> Unit
@@ -138,7 +140,7 @@ fun SignupScreenContent(
                     value = state.password,
                     leadingIcon = {
                         Icon(
-                            painter = painterResource(id = R.drawable.ic_password),
+                            painter = painterResource(id = R.drawable.ic_lock_password),
                             contentDescription = null,
                             tint = Color.Gray
                         )
@@ -190,7 +192,7 @@ fun SignupScreenContent(
                     text = stringResource(id = R.string.label_button_signup_screen),
                     isLoading = false,
                     enabled = state.enabledSignupButton,
-                    onClick = {}
+                    onClick = { action(SignupAction.OnSignup) }
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -271,7 +273,7 @@ fun SignupScreenContent(
 @Composable
 private fun SignupPreview() {
     MovieStreamingTheme {
-        SignupScreenContent(
+        SignupContent(
             state = SignupState(),
             action = {},
             onBackPressed = {}
