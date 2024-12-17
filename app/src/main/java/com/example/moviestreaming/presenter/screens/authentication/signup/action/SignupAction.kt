@@ -1,6 +1,6 @@
 package com.example.moviestreaming.presenter.screens.authentication.signup.action
 
-import com.example.moviestreaming.core.enums.InputType
+import com.example.moviestreaming.core.enums.input.InputType
 
 sealed class SignupAction {
 
@@ -12,4 +12,6 @@ sealed class SignupAction {
     data object OnPasswordVisibilityChange: SignupAction()
 
     data object OnSignup : SignupAction()
+
+    data object ResetError : SignupAction()
 }

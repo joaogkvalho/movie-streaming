@@ -1,4 +1,4 @@
-package com.example.moviestreaming.presenter.screens.authentication.signup.screen
+package com.example.moviestreaming.presenter.screens.authentication.login.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -52,22 +52,22 @@ import com.example.moviestreaming.presenter.components.divider.HorizontalDivider
 import com.example.moviestreaming.presenter.components.snackbar.FeedbackUI
 import com.example.moviestreaming.presenter.components.textField.TextFieldUI
 import com.example.moviestreaming.presenter.components.topAppBar.TopAppBarUI
-import com.example.moviestreaming.presenter.screens.authentication.signup.action.SignupAction
-import com.example.moviestreaming.presenter.screens.authentication.signup.state.SignupState
-import com.example.moviestreaming.presenter.screens.authentication.signup.viewmodel.SignupViewModel
+import com.example.moviestreaming.presenter.screens.authentication.login.action.LoginAction
+import com.example.moviestreaming.presenter.screens.authentication.login.state.LoginState
+import com.example.moviestreaming.presenter.screens.authentication.login.viewmodel.LoginViewModel
 import com.example.moviestreaming.presenter.theme.MovieStreamingTheme
 import com.example.moviestreaming.presenter.theme.UrbanistFamily
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SignupScreen(
+fun LoginScreen(
     onBackPressed: () -> Unit
 ) {
-    val viewModel = koinViewModel<SignupViewModel>()
+    val viewModel = koinViewModel<LoginViewModel>()
     val state by viewModel.state.collectAsState()
 
-    SignupContent(
+    LoginContent(
         state = state,
         action = viewModel::submitAction,
         onBackPressed = onBackPressed
@@ -75,9 +75,9 @@ fun SignupScreen(
 }
 
 @Composable
-fun SignupContent(
-    state: SignupState,
-    action: (SignupAction) -> Unit,
+fun LoginContent(
+    state: LoginState,
+    action: (LoginAction) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val context = LocalContext.current
@@ -95,7 +95,7 @@ fun SignupContent(
                     )
 
                 if (result == SnackbarResult.Dismissed) {
-                    action(SignupAction.ResetError)
+                    action(LoginAction.ResetError)
                 }
             }
         }
@@ -140,7 +140,7 @@ fun SignupContent(
                 Spacer(modifier = Modifier.height(48.dp))
 
                 Text(
-                    text = stringResource(id = R.string.label_title_signup_screen),
+                    text = stringResource(id = R.string.label_title_login_screen),
                     style = TextStyle(
                         fontSize = 32.sp,
                         lineHeight = 38.4.sp,
@@ -163,17 +163,17 @@ fun SignupContent(
                         )
                     },
                     isError = false,
-                    placeholder = stringResource(id = R.string.label_input_email_signup_screen),
+                    placeholder = stringResource(id = R.string.label_input_email_login_screen),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
                     ),
                     onValueChange = {
                         action(
-                            SignupAction.OnValueChange(
-                            value =  it,
-                            type = InputType.EMAIL
-                        ))
+                            LoginAction.OnValueChange(
+                                value =  it,
+                                type = InputType.EMAIL
+                            ))
                     }
                 )
 
@@ -192,7 +192,7 @@ fun SignupContent(
                         if (state.password.isNotEmpty()) {
                             IconButton(
                                 onClick = {
-                                    action(SignupAction.OnPasswordVisibilityChange)
+                                    action(LoginAction.OnPasswordVisibilityChange)
                                 },
                                 content = {
                                     Icon(
@@ -209,22 +209,22 @@ fun SignupContent(
                         }
                     },
                     isError = false,
-                    placeholder = stringResource(id = R.string.label_input_password_signup_screen),
+                    placeholder = stringResource(id = R.string.label_input_password_login_screen),
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
                     visualTransformation = if (state.passwordVisibility) {
-                            VisualTransformation.None
-                        } else {
-                            PasswordVisualTransformation()
-                        },
+                        VisualTransformation.None
+                    } else {
+                        PasswordVisualTransformation()
+                    },
                     onValueChange = {
                         action(
-                            SignupAction.OnValueChange(
-                            value = it,
-                            type = InputType.PASSWORD
-                        ))
+                            LoginAction.OnValueChange(
+                                value = it,
+                                type = InputType.PASSWORD
+                            ))
                     }
                 )
 
@@ -233,16 +233,31 @@ fun SignupContent(
                 PrimaryButton(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = stringResource(id = R.string.label_button_signup_screen),
+                    text = stringResource(id = R.string.label_button_login_screen),
                     isLoading = false,
-                    enabled = state.enabledSignupButton,
-                    onClick = { action(SignupAction.OnSignup) }
+                    enabled = state.enabledSignInButton,
+                    onClick = { action(LoginAction.OnSignIn) }
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text(
+                    text = stringResource(R.string.label_forgot_password_login_screen),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        lineHeight = 22.4.sp,
+                        fontFamily = UrbanistFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MovieStreamingTheme.colorScheme.defaultColor,
+                        textAlign = TextAlign.Center,
+                        letterSpacing = 0.2.sp
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
 
                 HorizontalDividerWithText(
-                    text = stringResource(id = R.string.label_or_signup_screen)
+                    text = stringResource(id = R.string.label_or_login_screen)
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -275,7 +290,7 @@ fun SignupContent(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(48.dp))
+                Spacer(modifier = Modifier.height(28.dp))
 
                 Row(
                     modifier = Modifier
@@ -284,7 +299,7 @@ fun SignupContent(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = stringResource(id = R.string.label_sign_in_account_signup_screen),
+                        text = stringResource(id = R.string.label_sign_up_account_login_screen),
                         style = TextStyle(
                             lineHeight = 19.6.sp,
                             fontFamily = UrbanistFamily,
@@ -297,7 +312,7 @@ fun SignupContent(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
-                        text = stringResource(id = R.string.label_sign_in_signup_screen),
+                        text = stringResource(id = R.string.label_sign_up_login_screen),
                         style = TextStyle(
                             lineHeight = 19.6.sp,
                             fontFamily = UrbanistFamily,
@@ -315,12 +330,13 @@ fun SignupContent(
 
 @PreviewLightDark
 @Composable
-private fun SignupPreview() {
+private fun LoginPreview() {
     MovieStreamingTheme {
-        SignupContent(
-            state = SignupState(),
+        LoginContent(
+            state = LoginState(),
             action = {},
             onBackPressed = {}
         )
     }
 }
+
